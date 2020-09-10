@@ -36,8 +36,8 @@ func setKey(key string, val string) {
 
 func init() {
 	Client = redis.NewClient(&redis.Options{
-		Addr:     "test.au32.cn:6379",
-		Password: "test123",
+		Addr:     "test.yjwh.shop:6379",
+		Password: "123456",
 
 		DB: 13,
 	})
@@ -72,5 +72,5 @@ func main() {
 		fmt.Println("shortUrl is https://d.au32.cn/", url)
 	})
 
-	r.Run() // listen and serve on 0.0.0.0:8080
+	r.Run(":3070") // listen and serve on 0.0.0.0:8080
 }
