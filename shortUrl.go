@@ -67,9 +67,9 @@ func main() {
 		url := c.Query("url")
 		result, _ := lib.Transform(url)
 
-		c.JSON(200, "https://d.au32.cn/"+result[0])
+		c.JSON(200, "https://d.yjwh.shop/"+result[0])
 		setKey(result[0], url)
-		fmt.Println("shortUrl is https://d.au32.cn/", url)
+		fmt.Println("shortUrl is https://d.yjwh.shop/", url)
 	})
 
 	r.Run(":3070") // listen and serve on 0.0.0.0:8080
