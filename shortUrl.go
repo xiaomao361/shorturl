@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 
 	"zhouwei/shorturl/lib"
@@ -36,15 +37,6 @@ func setKey(key string, val string) {
 		fmt.Println("key set success")
 	}
 }
-
-// init func can not take params
-// func init() {
-// 	Client = redis.NewClient(&redis.Options{
-// 		Addr:     "redis:6379",
-// 		Password: "heals@2020.",
-// 		DB:       13,
-// 	})
-// }
 
 func main() {
 
@@ -95,23 +87,29 @@ func main() {
 
 	r.Use(func(c *gin.Context) {
 		url := c.Request.RequestURI
+		// todo: need to check url with or without http:// or  https://
 		if len(url) == 7 {
 			val := getKey(url[1:7])
-			c.Redirect(301, val)
+			c.Redirect(http.StatusMovedPermanently, val)
 		} else {
 			fmt.Println("err")
-
 		}
 
 	})
 
 	r.GET("/makeUrl", func(c *gin.Context) {
 		url := c.Query("url")
-		result, _ := lib.Transform(url)
+		if url[0:4] != "http" {
+			c.JSON(200, gin.H{
+				"error": "url need begin with http:// or https://",
+			})
+		} else {
+			result, _ := lib.Transform(url)
 
-		c.JSON(200, "https://"+baseURL+"/"+result[0])
-		setKey(result[0], url)
-		fmt.Println("shortUrl is", "https://"+baseURL+"/"+url)
+			c.JSON(200, "https://"+baseURL+"/"+result[0])
+			setKey(result[0], url)
+			fmt.Println("shortUrl is", "https://"+baseURL+"/"+url)
+		}
 	})
 
 	fmt.Println("server start on port ", port)
