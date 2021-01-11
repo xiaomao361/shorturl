@@ -12,6 +12,42 @@ import (
 	"github.com/go-redis/redis"
 )
 
+// Client reids
+var Client *redis.Client
+
+// get redis keys value with hash keys
+func getKey(key string) string {
+	val, err := Client.Get(key).Result()
+	if err == redis.Nil {
+		fmt.Println("keys doe not exist")
+	} else if err != nil {
+		panic(err)
+	} else {
+		fmt.Println(key, val)
+	}
+	return val
+}
+
+// set redis keys
+func setKey(key string, val string) {
+	err := Client.Set(key, val, 0).Err()
+	if err != nil {
+		panic(err)
+	} else {
+		fmt.Println("key set success")
+	}
+}
+
+// del redis keys
+func delKey(key string) {
+	err := Client.Del(key).Err()
+	if err != nil {
+		panic(err)
+	} else {
+		fmt.Println("key del success")
+	}
+}
+
 func main() {
 
 	// static vars
@@ -83,6 +119,20 @@ func main() {
 			c.JSON(200, "https://"+baseURL+"/"+result[0])
 			setKey(result[0], url)
 			fmt.Println("shortUrl is", "https://"+baseURL+"/"+url)
+		}
+	})
+
+	r.GET("/delUrl", func(c *gin.Context) {
+		url := c.Query("url")
+		if url[0:4] != "http" {
+			c.JSON(200, gin.H{
+				"error": "url need begin with http:// or https://",
+			})
+		} else {
+			delKey(url)
+			c.JSON(200, gin.H{
+				"message": "key delete suuccess",
+			})
 		}
 	})
 
