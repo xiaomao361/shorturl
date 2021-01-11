@@ -75,7 +75,7 @@ func main() {
 	// print the input params
 	fmt.Println("redis host:", redisHost)
 	fmt.Println("redis password:", redisPassWord)
-	fmt.Println("redis port:", redisPassWord)
+	fmt.Println("redis port:", redisPort)
 	fmt.Println("base url:", baseURL)
 	// fmt.Println("server port:", port)
 
