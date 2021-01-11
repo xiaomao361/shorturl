@@ -77,7 +77,7 @@ func main() {
 	fmt.Println("redis password:", redisPassWord)
 	fmt.Println("redis port:", redisPassWord)
 	fmt.Println("base url:", baseURL)
-	fmt.Println("server port:", port)
+	// fmt.Println("server port:", port)
 
 	Client = redis.NewClient(&redis.Options{
 		Addr:     redisHost + ":" + redisPort,
@@ -85,8 +85,19 @@ func main() {
 		DB:       13,
 	})
 
+	// check redis connect
+	fmt.Println("test redis connection")
+	setKey("ping", "pong")
+	delKey("ping")
+
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
+
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"ping": "pong",
+		})
+	})
 
 	// health check
 	r.GET("/ping", func(c *gin.Context) {
@@ -97,7 +108,6 @@ func main() {
 
 	r.Use(func(c *gin.Context) {
 		url := c.Request.RequestURI
-		// todo: need to check url with or without http:// or  https://
 		if len(url) == 7 {
 			val := getKey(url[1:7])
 			c.Redirect(http.StatusMovedPermanently, val)
@@ -124,16 +134,11 @@ func main() {
 
 	r.GET("/delUrl", func(c *gin.Context) {
 		url := c.Query("url")
-		if url[0:4] != "http" {
-			c.JSON(200, gin.H{
-				"error": "url need begin with http:// or https://",
-			})
-		} else {
-			delKey(url)
-			c.JSON(200, gin.H{
-				"message": "key delete suuccess",
-			})
-		}
+
+		delKey(url)
+		c.JSON(200, gin.H{
+			"message": "key delete suuccess",
+		})
 	})
 
 	fmt.Println("server start on port ", port)
