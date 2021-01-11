@@ -93,12 +93,6 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"ping": "pong",
-		})
-	})
-
 	// health check
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -111,10 +105,7 @@ func main() {
 		if len(url) == 7 {
 			val := getKey(url[1:7])
 			c.Redirect(http.StatusMovedPermanently, val)
-		} else {
-			fmt.Println("err")
 		}
-
 	})
 
 	r.GET("/makeUrl", func(c *gin.Context) {
