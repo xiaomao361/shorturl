@@ -137,7 +137,7 @@ func main() {
 
 		delKey(url)
 		c.JSON(200, gin.H{
-			"message": "key delete suuccess",
+			"message": "key delete success",
 		})
 	})
 
