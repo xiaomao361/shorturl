@@ -92,6 +92,12 @@ func main() {
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
+	r.LoadHTMLFiles("html/index.html")
+
+	// index
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", gin.H{})
+	})
 
 	// health check
 	r.GET("/ping", func(c *gin.Context) {

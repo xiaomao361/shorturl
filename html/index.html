@@ -1,11 +1,146 @@
+<!DOCTYPE html>
 <html>
-	<div>
-        <form action="/makeUrl" method="get">
-            <input type="text" name="url">
-            <input type="submit" value="提交">
-        </form>
-        <h1>
-		     https://d.heals.net.cn/{{ .result }}
-	    </h1>
-    </div>
+<head>
+	<title></title>
+</head>
+<body>
+	<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+	body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td,hr,button,article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section,ul,li{margin:0;padding:0;}
+		article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section,iframe{display:block;}
+		html{font-size: 13px;_font-size: 12px;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;}
+		html, button, input, select, textarea{font-family:"Microsoft YaHei",PingFangSC-Light,"PingFang SC",SimSun,Arial; _font-family:"Microsoft YaHei",PingFangSC-Light,"PingFang SC"}
+		button, input, select, textarea{font-size: 100%;}
+		body{color: #222;background-color: #F8FAFB;line-height: 1.5;}
+		audio,canvas,video{display: inline-block;*display: inline;*zoom: 1;}
+		address, cite, dfn, em, var, i{font-style: normal;}
+		a{color: #338de6;text-decoration: none;} 
+		.anone{color: #666666;text-decoration: none!important;}
+		a:focus{outline: thin dotted;outline:none;}
+		a:active, a:hover{outline: 0;}
+		a:hover{text-decoration: underline;}
+		q{quotes: none;}
+		q:before, q:after{content: '';content: none;}
+		small{font-size: 75%;}
+		sub, sup{font-size: 75%;line-height: 0;position: relative;vertical-align: baseline;}
+		sup{top: -.5em;}
+		sub{bottom: -.25em;}
+		ul, ol, li{list-style: none;}
+		img{border: 0;-ms-interpolation-mode: bicubic;}
+		svg:not(:root){overflow: hidden;}
+		button, input, select{vertical-align: middle;}
+		textarea{overflow: auto;vertical-align: top;outline:none;resize:none;}
+		button, input{line-height: normal; outline:none;}
+		button, html input[type=button], input[type=reset], input[type=submit]{-webkit-appearance: button;cursor: pointer; *overflow: visible;}
+		button[disabled], input[disabled]{cursor: default;}
+		button::-moz-focus-inner, input::-moz-focus-inner{border: 0;}
+		input[type=checkbox], input[type=radio]{box-sizing: border-box; *height: 13px; *width: 13px;}
+		input[type=search]{-webkit-appearance: textfield;box-sizing: content-box;}
+		input[type=search]::-webkit-search-cancel-button, input[type=search]::-webkit-search-decoration{-webkit-appearance: none;}
+		input::-ms-clear{display:none;}
+		table{border-collapse:collapse;border-spacing: 0;}
+		th{text-align:inherit;}
+		 	
+
+		 	.logo{
+	 		    font-size: 60px;
+			    font-family: fantasy;
+			    text-align: center;
+			    font-weight: bold;
+			    margin-bottom: 40px;
+		 	}
+
+			.short-box{
+				width: 640px;
+				margin: 150px auto;
+			}
+
+			.short-form{
+				border: 1px solid #c6cede;
+			    height: 40px;
+			    border-image: none;
+			    background: #FFF;
+			    vertical-align: top;
+			    overflow: hidden;
+			    display: flex;
+			}
+
+			.short-input{
+			    height: 25px;
+			    line-height: 25px;
+			    margin: 6px 0 0 10px;
+			    padding: 0;
+			    background: none;
+			    border: 0 none;
+			    outline: 0 none;
+			    flex: 1;
+			}
+
+			.short-btn{
+			    width: 90px;
+			    background: #55a7e3;
+			    color: #fff;
+			    font-size: 14px;
+			    padding: 0;
+			    border: 0 none;
+			}
+
+			.short-btn:active{
+			    outline: none;
+			    border: none;
+			}
+
+			.short-btn:hover{
+			    background-color: #2f87c1;
+			}
+
+			.short-result{
+				padding: 10px 0;
+    			font-size: 14px;
+			}
+
+	</style>
+	<div >
+			<div class="short-box">
+					<div class="logo">HEALS</div>
+					<div class="short-form">
+						<input class="short-input" type="text" name="" placeholder="请输入网址 例如: https://heals.net.cn">
+						<button class="short-btn">生成</button>
+					</div>
+					<div class="short-result"></div>
+			</div>	
+	</div>
+
+
+	<script type="text/javascript">
+		
+		const apUrl = 'https://d.heals.net.cn/makeUrl?url='
+		const btnDom = document.querySelector(".short-btn");
+		const resultDom = document.querySelector(".short-result");
+		const inputDom = document.querySelector(".short-input")
+		const reg = /^(?:(http|https|ftp):\/\/)?((?:[\w-]+\.)+[a-z0-9]+)((?:\/[^/?#]*)+)?(\?[^#]+)?(#.+)?$/i;
+
+		btnDom.addEventListener('click', async function (){
+			const url = inputDom.value.trim();
+			if( !url ||  !reg.test(url)){
+				return alert("请输入正确网址")
+			}
+			let result = await request({url});
+			resultDom.innerHTML = `结果: ${result}`
+		})
+
+		function request(params = { url: '' }){
+			return new Promise(resolve => {
+				fetch(apUrl + params.url).then(res => {
+					 resolve(res.json());
+				})
+			})
+		}
+
+	</script>
+</body>
 </html>
