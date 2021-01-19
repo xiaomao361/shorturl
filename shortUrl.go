@@ -125,7 +125,7 @@ func main() {
 
 			c.JSON(200, "https://"+baseURL+"/"+result[0])
 			setKey(result[0], url)
-			fmt.Println("shortUrl is", "https://"+baseURL+"/"+url)
+			fmt.Println("shortUrl is", "https://"+baseURL+"/"+result[0])
 		}
 	})
 
