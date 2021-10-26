@@ -92,7 +92,7 @@ func main() {
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
-	r.LoadHTMLFiles("html/index.html")
+	r.LoadHTMLFiles("/home/index.html")
 
 	// index
 	r.GET("/", func(c *gin.Context) {
@@ -124,7 +124,10 @@ func main() {
 			result, _ := lib.Transform(url)
 
 			c.JSON(200, "https://"+baseURL+"/"+result[0])
-			setKey(result[0], url)
+			if getKey(result[0]) == "" {
+				setKey(result[0], url)
+			}
+
 			fmt.Println("shortUrl is", "https://"+baseURL+"/"+result[0])
 		}
 	})
