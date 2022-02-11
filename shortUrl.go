@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"zhouwei/shorturl/lib"
 
@@ -30,7 +31,7 @@ func getKey(key string) string {
 
 // set redis keys
 func setKey(key string, val string) {
-	err := Client.Set(key, val, 0).Err()
+	err := Client.Set(key, val, (time.Duration(720) * time.Hour)).Err()
 	if err != nil {
 		panic(err)
 	} else {
